@@ -1,0 +1,8 @@
+*.log
+Thumbs.db
+.DS_Store
+/build/
+/dist/
+*.user
+*.suo
+.vs/
