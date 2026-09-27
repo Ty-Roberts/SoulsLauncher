@@ -16,7 +16,7 @@ using Microsoft.Win32;
 
 [assembly: System.Reflection.AssemblyTitle("Souls Launcher")]
 [assembly: System.Reflection.AssemblyDescription("Community launcher for Souls games")]
-[assembly: System.Reflection.AssemblyVersion("1.0.0.0")]
+[assembly: System.Reflection.AssemblyVersion("1.0.1.0")]
 
 internal sealed class Game
 {
