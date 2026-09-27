@@ -30,6 +30,7 @@ An unofficial, native Windows launcher for FromSoftware's Souls games:
 - Opens the installed mod's settings file directly from the launcher
 - Stores configuration locally and does not modify game or mod files
 - Runs as a native Windows application without a terminal window
+- Corrects Steam application identifiers when launched as a non-Steam game
 
 ## Install
 
@@ -64,7 +65,7 @@ The project uses the .NET Framework compiler included with Windows development t
 The compiled application and required artwork are written to `build/`. To produce a release ZIP:
 
 ```powershell
-.\package.ps1 -Version 1.0.1
+.\package.ps1 -Version 1.0.2
 ```
 
 The package is written to `dist/`.

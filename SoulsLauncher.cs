@@ -16,7 +16,7 @@ using Microsoft.Win32;
 
 [assembly: System.Reflection.AssemblyTitle("Souls Launcher")]
 [assembly: System.Reflection.AssemblyDescription("Community launcher for Souls games")]
-[assembly: System.Reflection.AssemblyVersion("1.0.1.0")]
+[assembly: System.Reflection.AssemblyVersion("1.0.2.0")]
 
 internal sealed class Game
 {
@@ -230,8 +230,22 @@ internal sealed class LauncherWindow
         if (!IsExecutable(path)) { statusText.Text = "PATH REQUIRED"; ShowSettings(); return; }
         try
         {
-            Process.Start(new ProcessStartInfo { FileName = path, WorkingDirectory = Path.GetDirectoryName(path), UseShellExecute = true });
-            statusText.Text = "LAUNCHED  /  " + game.Name;
+            var launch = new ProcessStartInfo
+            {
+                FileName = path,
+                WorkingDirectory = Path.GetDirectoryName(path),
+                UseShellExecute = false,
+                CreateNoWindow = false
+            };
+
+            // A non-Steam shortcut gives this launcher the shortcut's synthetic Steam
+            // identity. Do not pass that identity to the real game/mod launcher.
+            launch.EnvironmentVariables["SteamAppId"] = game.SteamAppId;
+            launch.EnvironmentVariables["SteamGameId"] = game.SteamAppId;
+            launch.EnvironmentVariables["SteamOverlayGameId"] = game.SteamAppId;
+
+            Process.Start(launch);
+            statusText.Text = "LAUNCHED  /  " + game.LauncherFile;
         }
         catch (Exception ex)
         {
