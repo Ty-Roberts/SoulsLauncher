@@ -16,7 +16,7 @@ using Microsoft.Win32;
 
 [assembly: System.Reflection.AssemblyTitle("Souls Launcher")]
 [assembly: System.Reflection.AssemblyDescription("Community launcher for Souls games")]
-[assembly: System.Reflection.AssemblyVersion("1.0.3.0")]
+[assembly: System.Reflection.AssemblyVersion("1.0.4.0")]
 
 internal sealed class Game
 {
@@ -232,6 +232,24 @@ internal sealed class LauncherWindow
         if (!IsExecutable(path)) { statusText.Text = "PATH REQUIRED"; ShowSettings(); return; }
         try
         {
+            // Steam follows and hooks processes started by a non-Steam shortcut. Some
+            // Seamless launchers (notably DS2) then fail to inject even though they work
+            // when double-clicked. Let the existing Windows shell broker start the file
+            // so it gets the same launch context as an Explorer double-click instead of
+            // remaining a child of the Steam-started Souls Launcher process.
+            if (IsRunningFromSteam())
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "explorer.exe",
+                    Arguments = "\"" + path + "\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                });
+                statusText.Text = "LAUNCHED VIA WINDOWS  /  " + game.LauncherFile;
+                return;
+            }
+
             var launch = new ProcessStartInfo
             {
                 FileName = path,
@@ -254,6 +272,13 @@ internal sealed class LauncherWindow
             MessageBox.Show("Could not launch the executable.\n\n" + ex.Message, "Souls Launcher", MessageBoxButton.OK, MessageBoxImage.Error);
             statusText.Text = "LAUNCH FAILED";
         }
+    }
+
+    private static bool IsRunningFromSteam()
+    {
+        return !String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SteamGameId"))
+            || !String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SteamAppId"))
+            || !String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SteamOverlayGameId"));
     }
 
     private void ShowSettings() { BuildSettingsRows(); homeView.Visibility = Visibility.Collapsed; settingsView.Visibility = Visibility.Visible; }
