@@ -16,7 +16,7 @@ using Microsoft.Win32;
 
 [assembly: System.Reflection.AssemblyTitle("Souls Launcher")]
 [assembly: System.Reflection.AssemblyDescription("Community launcher for Souls games")]
-[assembly: System.Reflection.AssemblyVersion("1.0.2.0")]
+[assembly: System.Reflection.AssemblyVersion("1.0.3.0")]
 
 internal sealed class Game
 {
@@ -136,6 +136,8 @@ internal sealed class LauncherWindow
         settingsView = Find<Border>("SettingsView"); settingsRows = Find<StackPanel>("SettingsRows");
         soulsTab = Find<Button>("SoulsTab"); eldenTab = Find<Button>("EldenTab"); maxButton = Find<Button>("MaxButton");
         statusText = Find<TextBlock>("StatusText");
+        Find<TextBlock>("VersionText").Text = "VERSION  " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+        Find<TextBlock>("RunningFromText").Text = "RUNNING FROM  " + System.Reflection.Assembly.GetExecutingAssembly().Location;
     }
 
     private void WireEvents()
@@ -442,7 +444,7 @@ internal sealed class LauncherWindow
    <StackPanel Grid.Column='2' Orientation='Horizontal'><Button x:Name='MinButton' Style='{StaticResource WindowButton}' Content='&#x2500;'/><Button x:Name='MaxButton' Style='{StaticResource WindowButton}' Content='&#x25A1;'/><Button x:Name='CloseButton' Style='{StaticResource CloseButton}' Content='&#x00D7;'/></StackPanel>
   </Grid></Border>
   <Grid Grid.Row='1'><Grid x:Name='HomeView'><Grid x:Name='CardsHost'/><StackPanel HorizontalAlignment='Center' VerticalAlignment='Top' Margin='0,24,0,0' Panel.ZIndex='20'><TextBlock Text='CHOOSE YOUR JOURNEY' Foreground='#F4EFE4' FontFamily='Georgia' FontSize='28' HorizontalAlignment='Center'><TextBlock.Effect><DropShadowEffect BlurRadius='12' ShadowDepth='1' Opacity='.95' Color='Black'/></TextBlock.Effect></TextBlock><Border Background='#E60B0C0E' BorderBrush='#665B45' BorderThickness='1' CornerRadius='19' Padding='3' Margin='0,12,0,0' HorizontalAlignment='Center'><StackPanel Orientation='Horizontal'><Button x:Name='SoulsTab' Content='DARK SOULS' Style='{StaticResource SegmentButton}'/><Button x:Name='EldenTab' Content='ELDEN RING' Style='{StaticResource SegmentButton}'/></StackPanel></Border></StackPanel></Grid>
-   <Border x:Name='SettingsView' Visibility='Collapsed' Background='#FF0B0C0E' Padding='54,32'><Grid MaxWidth='1040'><Grid.RowDefinitions><RowDefinition Height='Auto'/><RowDefinition Height='*'/><RowDefinition Height='Auto'/></Grid.RowDefinitions><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width='Auto'/></Grid.ColumnDefinitions><StackPanel><TextBlock Text='GAME FOLDERS' Foreground='#EEE8DB' FontFamily='Georgia' FontSize='29'/><TextBlock Text='Steam libraries are scanned automatically. Manual folder selection remains available.' Foreground='#817E77' Margin='0,8,0,22'/></StackPanel><Button x:Name='ScanSteamButton' Grid.Column='1' Content='SCAN STEAM' Style='{StaticResource TopButton}' Height='38' Margin='18,0,0,0' Background='#2B2419' Foreground='#E5CEA1'/></Grid><ScrollViewer Grid.Row='1' VerticalScrollBarVisibility='Auto'><StackPanel x:Name='SettingsRows'/></ScrollViewer><Button x:Name='BackButton' Grid.Row='2' Content='DONE' Style='{StaticResource TopButton}' Width='120' HorizontalAlignment='Right' Margin='0,20,0,0' Background='#2B2419' Foreground='#E5CEA1'/></Grid></Border>
+   <Border x:Name='SettingsView' Visibility='Collapsed' Background='#FF0B0C0E' Padding='54,32'><Grid MaxWidth='1040'><Grid.RowDefinitions><RowDefinition Height='Auto'/><RowDefinition Height='*'/><RowDefinition Height='Auto'/></Grid.RowDefinitions><Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width='Auto'/></Grid.ColumnDefinitions><StackPanel><TextBlock Text='GAME FOLDERS' Foreground='#EEE8DB' FontFamily='Georgia' FontSize='29'/><TextBlock Text='Steam libraries are scanned automatically. Manual folder selection remains available.' Foreground='#817E77' Margin='0,8,0,8'/><StackPanel Orientation='Horizontal' Margin='0,0,0,18'><TextBlock x:Name='VersionText' Foreground='#B99A61' FontFamily='Segoe UI Semibold' FontSize='10'/><TextBlock Text='   &#x2022;   ' Foreground='#504B42' FontSize='10'/><TextBlock x:Name='RunningFromText' Foreground='#66635D' FontSize='10' TextTrimming='CharacterEllipsis' MaxWidth='650'/></StackPanel></StackPanel><Button x:Name='ScanSteamButton' Grid.Column='1' Content='SCAN STEAM' Style='{StaticResource TopButton}' Height='38' Margin='18,0,0,0' Background='#2B2419' Foreground='#E5CEA1'/></Grid><ScrollViewer Grid.Row='1' VerticalScrollBarVisibility='Auto'><StackPanel x:Name='SettingsRows'/></ScrollViewer><Button x:Name='BackButton' Grid.Row='2' Content='DONE' Style='{StaticResource TopButton}' Width='120' HorizontalAlignment='Right' Margin='0,20,0,0' Background='#2B2419' Foreground='#E5CEA1'/></Grid></Border>
   </Grid>
   <Border Grid.Row='2' BorderBrush='#292621' BorderThickness='0,1,0,0' Background='#FF0B0C0E' CornerRadius='0,0,10,10'><Grid Margin='18,0'><TextBlock Text='SOULS SERIES  &#x2022;  COMMUNITY LAUNCHER' Foreground='#56534D' FontSize='10' VerticalAlignment='Center'/><TextBlock x:Name='StatusText' Text='READY' Foreground='#71674F' FontSize='10' VerticalAlignment='Center' HorizontalAlignment='Right'/></Grid></Border>
  </Grid></Border>
