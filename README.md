@@ -30,7 +30,7 @@ An unofficial, native Windows launcher for FromSoftware's Souls games:
 - Opens the installed mod's settings file directly from the launcher
 - Stores configuration locally and does not modify game or mod files
 - Runs as a native Windows application without a terminal window
-- Corrects Steam application identifiers when launched as a non-Steam game
+- Uses a detached Windows launch with the correct game working directory when started as a non-Steam game
 - Displays the running version and executable location in Settings
 
 ## Install
@@ -44,6 +44,11 @@ Keep the `assets` folder beside the executable. No installer is required.
 ### Add to Steam
 
 In Steam, select **Games → Add a Non-Steam Game to My Library**, browse to `Souls Launcher.exe`, and add it. The application icon is embedded in the executable. A standalone `assets/app-icon.ico` and high-resolution `assets/app-icon.png` are also included for manual artwork customization.
+
+Custom Steam library artwork is available in `assets/steam`:
+
+- [Wide library hero — 920×420](assets/steam/souls-launcher-hero-920x420.png)
+- [Portrait library cover — 600×900](assets/steam/souls-launcher-cover-600x900.png)
 
 Steam libraries are scanned automatically at startup, including libraries on secondary drives. You can also use **Scan Steam** in Settings or select folders manually. When a compatible settings file is found, **Open Seamless Settings** appears and opens it in your default text editor.
 
