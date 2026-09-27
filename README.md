@@ -1,5 +1,9 @@
 # Souls Launcher
 
+<p align="center">
+  <img src="assets/app-icon.png" alt="Souls Launcher icon" width="180">
+</p>
+
 An unofficial, native Windows launcher for FromSoftware's Souls games:
 
 - Dark Souls Remastered
@@ -34,6 +38,10 @@ An unofficial, native Windows launcher for FromSoftware's Souls games:
 3. Run **`Souls Launcher.exe`**.
 
 Keep the `assets` folder beside the executable. No installer is required.
+
+### Add to Steam
+
+In Steam, select **Games → Add a Non-Steam Game to My Library**, browse to `Souls Launcher.exe`, and add it. The application icon is embedded in the executable. A standalone `assets/app-icon.ico` and high-resolution `assets/app-icon.png` are also included for manual artwork customization.
 
 Steam libraries are scanned automatically at startup, including libraries on secondary drives. You can also use **Scan Steam** in Settings or select folders manually. When a compatible settings file is found, **Open Seamless Settings** appears and opens it in your default text editor.
 

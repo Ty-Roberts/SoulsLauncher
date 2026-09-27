@@ -16,7 +16,9 @@ if (-not (Test-Path -LiteralPath $compiler)) {
 New-Item -ItemType Directory -Path $output -Force | Out-Null
 New-Item -ItemType Directory -Path (Join-Path $output 'assets') -Force | Out-Null
 
-& $compiler /nologo /target:winexe "/out:$executable" `
+& (Join-Path $root 'make-icon.ps1')
+
+& $compiler /nologo /target:winexe "/out:$executable" "/win32icon:$root\assets\app-icon.ico" `
     "/reference:$wpf\PresentationFramework.dll" `
     "/reference:$wpf\PresentationCore.dll" `
     "/reference:$wpf\WindowsBase.dll" `
@@ -29,6 +31,8 @@ if ($LASTEXITCODE -ne 0) { throw "Compilation failed with exit code $LASTEXITCOD
 
 Copy-Item -LiteralPath (Join-Path $root 'assets\souls-panorama.png') -Destination (Join-Path $output 'assets\souls-panorama.png') -Force
 Copy-Item -LiteralPath (Join-Path $root 'assets\elden-panorama.png') -Destination (Join-Path $output 'assets\elden-panorama.png') -Force
+Copy-Item -LiteralPath (Join-Path $root 'assets\app-icon.png') -Destination (Join-Path $output 'assets\app-icon.png') -Force
+Copy-Item -LiteralPath (Join-Path $root 'assets\app-icon.ico') -Destination (Join-Path $output 'assets\app-icon.ico') -Force
 
 $test = Start-Process -FilePath $executable -ArgumentList '/smoketest' -Wait -PassThru -WindowStyle Hidden
 if ($test.ExitCode -ne 0) { throw "Smoke test failed with exit code $($test.ExitCode)." }
