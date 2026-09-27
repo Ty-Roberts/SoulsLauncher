@@ -66,7 +66,7 @@ The project uses the .NET Framework compiler included with Windows development t
 The compiled application and required artwork are written to `build/`. To produce a release ZIP:
 
 ```powershell
-.\package.ps1 -Version 1.0.4
+.\package.ps1 -Version 1.0.5
 ```
 
 The package is written to `dist/`.

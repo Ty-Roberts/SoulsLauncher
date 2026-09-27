@@ -16,7 +16,7 @@ using Microsoft.Win32;
 
 [assembly: System.Reflection.AssemblyTitle("Souls Launcher")]
 [assembly: System.Reflection.AssemblyDescription("Community launcher for Souls games")]
-[assembly: System.Reflection.AssemblyVersion("1.0.4.0")]
+[assembly: System.Reflection.AssemblyVersion("1.0.5.0")]
 
 internal sealed class Game
 {
@@ -239,10 +239,11 @@ internal sealed class LauncherWindow
             // remaining a child of the Steam-started Souls Launcher process.
             if (IsRunningFromSteam())
             {
+                string shortcutPath = CreateLaunchShortcut(game, path);
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = "explorer.exe",
-                    Arguments = "\"" + path + "\"",
+                    Arguments = "\"" + shortcutPath + "\"",
                     UseShellExecute = false,
                     CreateNoWindow = true
                 });
@@ -272,6 +273,45 @@ internal sealed class LauncherWindow
             MessageBox.Show("Could not launch the executable.\n\n" + ex.Message, "Souls Launcher", MessageBoxButton.OK, MessageBoxImage.Error);
             statusText.Text = "LAUNCH FAILED";
         }
+    }
+
+    private static string CreateLaunchShortcut(Game game, string launcherPath)
+    {
+        string shortcutDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SoulsLauncher", "Launch Shortcuts");
+        Directory.CreateDirectory(shortcutDirectory);
+        string shortcutPath = Path.Combine(shortcutDirectory, game.Id + ".lnk");
+
+        Type shellType = Type.GetTypeFromProgID("WScript.Shell");
+        if (shellType == null) throw new InvalidOperationException("Windows Script Host is unavailable.");
+
+        object shell = null;
+        object shortcut = null;
+        try
+        {
+            shell = Activator.CreateInstance(shellType);
+            shortcut = shellType.InvokeMember("CreateShortcut", System.Reflection.BindingFlags.InvokeMethod,
+                null, shell, new object[] { shortcutPath });
+            Type shortcutType = shortcut.GetType();
+            shortcutType.InvokeMember("TargetPath", System.Reflection.BindingFlags.SetProperty,
+                null, shortcut, new object[] { launcherPath });
+            shortcutType.InvokeMember("WorkingDirectory", System.Reflection.BindingFlags.SetProperty,
+                null, shortcut, new object[] { Path.GetDirectoryName(launcherPath) });
+            shortcutType.InvokeMember("Description", System.Reflection.BindingFlags.SetProperty,
+                null, shortcut, new object[] { "Launch " + game.Name });
+            shortcutType.InvokeMember("Save", System.Reflection.BindingFlags.InvokeMethod,
+                null, shortcut, null);
+        }
+        finally
+        {
+            if (shortcut != null && System.Runtime.InteropServices.Marshal.IsComObject(shortcut))
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shortcut);
+            if (shell != null && System.Runtime.InteropServices.Marshal.IsComObject(shell))
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+        }
+
+        return shortcutPath;
     }
 
     private static bool IsRunningFromSteam()
