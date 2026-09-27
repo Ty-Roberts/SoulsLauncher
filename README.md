@@ -8,6 +8,16 @@ An unofficial, native Windows launcher for FromSoftware's Souls games:
 - Elden Ring
 - Elden Ring Nightreign
 
+## Screenshots
+
+### Dark Souls
+
+![Dark Souls game selection](docs/screenshots/dark-souls.png)
+
+### Elden Ring
+
+![Elden Ring game selection](docs/screenshots/elden-ring.png)
+
 ## Features
 
 - Automatically discovers installations across all Steam library folders

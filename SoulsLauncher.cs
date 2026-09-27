@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using System.Web.Script.Serialization;
 using Microsoft.Win32;
 
@@ -31,8 +32,15 @@ internal static class Program
         try
         {
             bool smokeTest = args.Any(a => a.Equals("/smoketest", StringComparison.OrdinalIgnoreCase));
+            bool screenshotMode = args.Length > 0 && args[0].Equals("/screenshots", StringComparison.OrdinalIgnoreCase);
             var app = new Application { ShutdownMode = ShutdownMode.OnMainWindowClose };
-            var launcher = new LauncherWindow(smokeTest);
+            var launcher = new LauncherWindow(smokeTest || screenshotMode);
+            if (screenshotMode)
+            {
+                launcher.CaptureScreenshots(args.Length > 1 ? args[1] : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "screenshots"));
+                launcher.Window.Close();
+                return 0;
+            }
             if (smokeTest)
             {
                 launcher.SmokeTest();
@@ -91,6 +99,33 @@ internal sealed class LauncherWindow
             throw new InvalidOperationException("UI smoke test failed.");
         foreach (var image in new[] { "souls-panorama.png", "elden-panorama.png" })
             if (!File.Exists(Path.Combine(root, "assets", image))) throw new FileNotFoundException("Missing artwork", image);
+    }
+
+    public void CaptureScreenshots(string outputDirectory)
+    {
+        Directory.CreateDirectory(outputDirectory);
+        Window.Width = 1280; Window.Height = 760;
+        Window.WindowStartupLocation = WindowStartupLocation.Manual;
+        Window.Left = -20000; Window.Top = -20000;
+        Window.Show();
+        Window.Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.ApplicationIdle);
+
+        selectedFamily = "Souls"; RenderCards(); SaveScreenshot(Path.Combine(outputDirectory, "dark-souls.png"));
+        selectedFamily = "Elden"; RenderCards(); SaveScreenshot(Path.Combine(outputDirectory, "elden-ring.png"));
+        Window.Hide();
+    }
+
+    private void SaveScreenshot(string path)
+    {
+        Window.UpdateLayout();
+        Window.Dispatcher.Invoke(new Action(() => { }), DispatcherPriority.Render);
+        int width = Math.Max(1, (int)Math.Round(Window.ActualWidth));
+        int height = Math.Max(1, (int)Math.Round(Window.ActualHeight));
+        var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+        bitmap.Render(Window);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using (var stream = File.Create(path)) encoder.Save(stream);
     }
 
     private T Find<T>(string name) where T : class { return Window.FindName(name) as T; }
