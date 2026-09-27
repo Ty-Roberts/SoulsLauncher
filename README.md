@@ -16,7 +16,7 @@ An unofficial, native Windows launcher for FromSoftware's Souls games:
 
 ### Elden Ring
 
-![Elden Ring game selection](docs/screenshots/elden-ring.png)
+![Elden Ring and Nightreign game selection](docs/screenshots/elden-ring-nightreign.png)
 
 ## Features
 
