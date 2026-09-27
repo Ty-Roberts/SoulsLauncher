@@ -33,6 +33,7 @@ Copy-Item -LiteralPath (Join-Path $root 'assets\souls-panorama.png') -Destinatio
 Copy-Item -LiteralPath (Join-Path $root 'assets\elden-panorama.png') -Destination (Join-Path $output 'assets\elden-panorama.png') -Force
 Copy-Item -LiteralPath (Join-Path $root 'assets\app-icon.png') -Destination (Join-Path $output 'assets\app-icon.png') -Force
 Copy-Item -LiteralPath (Join-Path $root 'assets\app-icon.ico') -Destination (Join-Path $output 'assets\app-icon.ico') -Force
+Copy-Item -LiteralPath (Join-Path $root 'assets\steam') -Destination (Join-Path $output 'assets') -Recurse -Force
 
 $test = Start-Process -FilePath $executable -ArgumentList '/smoketest' -Wait -PassThru -WindowStyle Hidden
 if ($test.ExitCode -ne 0) { throw "Smoke test failed with exit code $($test.ExitCode)." }
