@@ -71,7 +71,7 @@ internal sealed class LauncherWindow
         new Game { Id="ds2", Name="DARK SOULS II", Subtitle="SCHOLAR OF THE FIRST SIN", Family="Souls", Art="souls", Slice=1, SteamAppId="335300", LauncherFile="ds2sc_launcher.exe", SettingsFile="ds2sc_settings.ini" },
         new Game { Id="ds3", Name="DARK SOULS III", Subtitle="THE FIRE FADES", Family="Souls", Art="souls", Slice=2, SteamAppId="374320", LauncherFile="ds3sc_launcher.exe", SettingsFile="ds3sc_settings.ini" },
         new Game { Id="er", Name="ELDEN RING", Subtitle="THE LANDS BETWEEN", Family="Elden", Art="elden", Slice=0, SteamAppId="1245620", LauncherFile="ersc_launcher.exe", SettingsFile="ersc_settings.ini" },
-        new Game { Id="ern", Name="ELDEN RING", Subtitle="NIGHTREIGN", Family="Elden", Art="elden", Slice=1, SteamAppId="2622380", LauncherFile="nrsc_launcher.exe", SettingsFile="nrsc_settings.ini" }
+        new Game { Id="ern", Name="ELDEN RING NIGHTREIGN", Subtitle="", Family="Elden", Art="elden", Slice=1, SteamAppId="2622380", LauncherFile="nrsc_launcher.exe", SettingsFile="nrsc_settings.ini" }
     };
 
     private Grid cardsHost;
@@ -255,7 +255,7 @@ internal sealed class LauncherWindow
             row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(190) });
             var label = new TextBlock
             {
-                Text = game.Name + "\n" + game.Subtitle, Foreground = Brush("#D3CEC2"), FontFamily = new FontFamily("Georgia"),
+                Text = String.IsNullOrWhiteSpace(game.Subtitle) ? game.Name : game.Name + "\n" + game.Subtitle, Foreground = Brush("#D3CEC2"), FontFamily = new FontFamily("Georgia"),
                 FontSize = 13, VerticalAlignment = VerticalAlignment.Center
             };
             var box = new TextBox
