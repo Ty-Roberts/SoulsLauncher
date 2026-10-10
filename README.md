@@ -1,5 +1,4 @@
 # Souls Launcher
-![Downloads](https://shields.io)
 
 <p align="center">
   <img src="assets/app-icon.png" alt="Souls Launcher icon" width="180">
